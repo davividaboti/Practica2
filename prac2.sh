@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-#define N 5
+#define N 512
 
 float Mat[N][N];
 float MatDD[N][N];  
@@ -52,7 +53,6 @@ void MultEscalar( float vect[N], float vectres[N], float alfa ){
 int i;
 for (i=0;i<N;i++){
  vectres[i]=vect[i]*alfa;
- printf("%f \n",vectres[i]);
 }
 }
 
@@ -98,40 +98,221 @@ int Ortogonal_resultat (float vect1[N], float vect2[N]){
     return orto;
     }
 
-void Projection( float vect1[N], float vect2[N], float vectres[N] ){
- MultEscalar(vect2,vectres,Scalar(vect1,vect2)/Magnitude(vect2));
+
+float Projection( float vect1[N], float vect2[N], float vectres[N] ){
+ float scalar = Scalar(vect1,vect2);
+ float magnitud = Magnitude(vect2);
+ vectres[N] = (scalar / magnitud) * (vect2[N]);
+ return vectres[N];
 }
 
+
 float Infininorm( float M[N][N] ){
- int i, j;
+ int i;
  int infini_norma=0;
-    for (i=0; i<(N-1); i++){
-        for (j=0; j<(N-1); j++){
-            infini_norma += M[i][j];
+ int llista[N];
+ for (i=0; i<(N); i++){
+    infini_norma += M[(fabs), i][0];
+    llista[infini_norma];
+        }
+ for (i=0; i<(N); i++){
+    if (llista[0] < llista[i]) {
+        llista[0] = llista[i];
+    }
+    }
+ return llista[i];
+}
+
+float Onenorm( float M[N][N] ){
+ int j;
+ int one_norma=0;
+ int llista[N];
+ for (j=0; j<(N); j++){
+    one_norma += M[0][(fabs), j];
+    llista[one_norma];
+        }
+ for (j=0; j<(N); j++){
+    if (llista[0] < llista[j]) {
+        llista[0] = llista[j];
+    }
+    }
+ return llista[j];
+}
+
+int NormForbenius( float M[N][N] ){
+    int i, j;
+    int suma = 0;
+    int resultat=0;
+    for (i=0; i<N; i++) {
+        for (j=0; j<(N); j++){
+            suma += M[i^2][i^2];
         }
     }
- return infini_norma;
+    resultat = sqrt(suma);
+    return resultat;
 }
+
+int DiagonalDom( float M[N][N] ) {
+
+    
+}
+
 
 int main(){
  printf("Inicialitzo \n");
  InitData();
- printf("Imprimeixo vector \n");
- PrintVect(V1, 0, 2);
- printf("Imprimeixo fila \n");
- PrintRow(Mat, 1, 3, 10);
- printf("Imprimeixo multiplicació escalar \n"); 
- MultEscalar(V1, VRES, 5.0);
- printf("Imprimeixo producte escalar \n");
- float prod_esc = Scalar(V3, V2);
- printf("%f scalar \n", prod_esc);
- float magnitud = Magnitude(V1);
- printf("%f magnitude \n",magnitud);
- int ortogonal = Ortogonal(V1,V2);
- printf("%d ortogonal \n",ortogonal);
- Projection(V1, V2, VRES);
- printf("%f", VRES);
+ 
+ printf("Imprimeixo vector V1 del 0 al 9 \n");
+ PrintVect(V1, 0, 9);
+ printf("Imprimeixo vector V1 del 256 al 265 \n");
+ PrintVect(V1, 256, 265);
+
+ printf("Imprimeixo vector V2 del 0 al 9 \n");
+ PrintVect(V2, 0, 9);
+ printf("Imprimeixo vector V2 del 256 al 265 \n");
+ PrintVect(V2, 256, 265);
+ 
+ printf("Imprimeixo vector V3 del 0 al 9 \n");
+ PrintVect(V3, 0, 9);
+ printf("Imprimeixo vector V3 del 256 al 265 \n");
+ PrintVect(V3, 256, 265);
+
+ printf("Imprimeixo els elements 0 al 9 de la fila 0 de la matriu Mat \n");
+ PrintRow(Mat, 0, 0, 9);
+
+ printf("Imprimeixo els elements 0 al 9 de la fila 100 de la matriu Mat \n");
+ PrintRow(Mat, 100, 0, 9);
+
+ printf("Imprimeixo els elements 0 al 9 de la fila 0 de la matriu MatDD \n");
+ PrintRow(MatDD, 0, 0, 9);
+
+ printf("Imprimeixo els elements 0 al 9 de la fila 100 de la matriu MatDD \n");
+ PrintRow(MatDD, 100, 90, 99);
+
+ printf("Imprimeixo la infininorma de la matriu Mat \n");
  float infininorm = Infininorm(Mat);
- printf("%f infini_norma \n",infininorm);
+ printf("%f \n",infininorm);
+ 
+ printf("Imprimeixo la norma ú de la matriu Mat \n");
+ float oneform = Onenorm(Mat);
+ printf("%f \n",oneform);
+ 
+ printf("Imprimeixo la norma de Frobenius de la matriu Mat \n");
+ float normforbenius = NormForbenius(Mat);
+ printf("%f \n",normforbenius); 
+
+ printf("Imprimeixo si la matriu Mat és o no diagonal dominant \n");
+
+ printf("Imprimeixo la infininorma de la matriu MatDD \n");
+ float infininorm1 = Infininorm(MatDD);
+ printf("%f \n",infininorm1);
+ 
+ printf("Imprimeixo la norma ú de la matriu MatDD \n");
+ float oneform1 = Onenorm(MatDD);
+ printf("%f \n",oneform1);
+ 
+ printf("Imprimeixo la norma de Frobenius de la matriu MatDD \n");
+ float normforbenius1 = NormForbenius(MatDD);
+ printf("%f \n",normforbenius1); 
+
+ printf("Imprimeixo si la matriu MatDD és o no diagonal dominant \n");
+
+ printf("Imprimeixo el producte escalar de V1 i V2 \n");
+ float prod_esc = Scalar(V1, V2);
+ printf("%f \n", prod_esc);
+
+ printf("Imprimeixo el producte escalar de V1 i V3 \n");
+ float prod_esc1 = Scalar(V1, V3);
+ printf("%f \n", prod_esc1);
+
+ printf("Imprimeixo el producte escalar de V2 i V3 \n");
+ float prod_esc2 = Scalar(V2, V3);
+ printf("%f \n", prod_esc2);
+
+ printf("Imprimeixo la magnitud de V1 \n");
+ float magnitud = Magnitude(V1);
+ printf("%f  \n",magnitud);
+
+ printf("Imprimeixo la magnitud de V2 \n");
+ float magnitud1 = Magnitude(V2);
+ printf("%f  \n",magnitud1);
+
+ printf("Imprimeixo la magnitud de V3 \n");
+ float magnitud2 = Magnitude(V3);
+ printf("%f  \n",magnitud2);
+
+ printf("Imprimeixo si el vector V1 és o no ortogonal amb V2 \n");
+ int ortogonal = Ortogonal(V1,V2);
+ if (ortogonal == 0){
+    printf("V1 i V2 no són ortogonals \n");
+ }
+ else {
+    printf("V1 i V2 són ortogonals \n");
+ }
+ 
+ printf("Imprimeixo si el vector V1 és o no ortogonal amb V3 \n");
+ int ortogonal1 = Ortogonal(V1,V3);
+ if (ortogonal1 == 0){
+    printf("V1 i V3 no són ortogonals \n");
+ }
+ else {
+    printf("V1 i V3 són ortogonals \n");
+ }
+ 
+ printf("Imprimeixo si el vector V2 és o no ortogonal amb V1 \n");
+ int ortogonal2 = Ortogonal(V2,V1);
+ if (ortogonal2 == 0){
+    printf("V2 i V1 no són ortogonals \n");
+ }
+ else {
+    printf("V2 i V1 són ortogonals \n");
+ }
+ 
+ printf("Imprimeixo si el vector V2 és o no ortogonal amb V3 \n");
+ int ortogonal3 = Ortogonal(V2,V3);
+ if (ortogonal3 == 0){
+    printf("V2 i V3 no són ortogonals \n");
+ }
+ else {
+    printf("V2 i V3 són ortogonals \n");
+ }
+ 
+ printf("Imprimeixo si el vector V3 és o no ortogonal amb V1 \n");
+ int ortogonal4 = Ortogonal(V3,V1);
+ if (ortogonal4 == 0){
+    printf("V3 i V1 no són ortogonals \n");
+ }
+ else {
+    printf("V3 i V1 són ortogonals \n");
+ }
+ 
+ printf("Imprimeixo si el vector V3 és o no ortogonal amb V2 \n");
+ int ortogonal5 = Ortogonal(V3,V2);
+ if (ortogonal5 == 0){
+    printf("V3 i V2 no són ortogonals \n");
+ }
+ else {
+    printf("V3 i V2 són ortogonals \n");
+ }
+
+ printf("Imprimeixo la multiplicació del vector V3 amb l'escalar 2.0 i visualitzem els elements de 0 a 9 \n");
+ MultEscalar(V1, V4, 2.0);
+ PrintVect(V4,0,9);
+ 
+ printf("Imprimeixo la multiplicació del vector V3 amb l'escalar 2.0 i visualitzem els elements de 256 a 265 \n");
+ PrintVect(V4,256,265);
+
+ printf("Imprimeixo la projecció del vector V2 amb V3 \n");
+ for (int i=0; i<10; i++){
+    float projeccio = Projection(V2,V3,V4);
+    printf("La projecció és: %f \n",projeccio);
+ } 
+
+ printf("Imprimeixo la projecció del vector V2 amb V3 \n");
+ for (int i=0; i<10; i++){
+    float projeccio2 = Projection(V1,V2,V4);
+    printf("La projecció és: %f \n",projeccio2);
+ } 
+
 return 0;
 }
