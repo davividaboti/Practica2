@@ -156,17 +156,23 @@ int DiagonalDom( float M[N][N] ) {
  int i, j;
  int suma = 0;
  int x;
+ int elements = 0;
+ int diagonal = 0;
  for (i=0; i<N; i++) {
    for (j=0; j<N; j++){
     if (i == j) {
      x =  fabs(M[i][j]);
+     elements += 1;
     }
     else {
      suma += fabs(M[i][j]);
     }
    }
+ if (x>suma) {
+   diagonal +=1;
  }
- if (x >= suma) {
+ }
+ if (diagonal == elements) {
    return 1;
  }
  else {
@@ -339,7 +345,7 @@ int main(){
     printf("La projecció és: %f \n",projeccio);
  } 
 
- printf("Imprimeixo la projecció del vector V2 amb V3 \n");
+ printf("Imprimeixo la projecció del vector V1 amb V2 \n");
  for (int i=0; i<10; i++){
     float projeccio2 = Projection(V1,V2,V4);
     printf("La projecció és: %f \n",projeccio2);
