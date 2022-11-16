@@ -153,8 +153,25 @@ int NormForbenius( float M[N][N] ){
 }
 
 int DiagonalDom( float M[N][N] ) {
-
-    
+ int i, j;
+ int suma = 0;
+ int x;
+ for (i=0; i<N; i++) {
+   for (j=0; j<N; j++){
+    if (i == j) {
+     x =  fabs(M[i][j]);
+    }
+    else {
+     suma += fabs(M[i][j]);
+    }
+   }
+ }
+ if (x >= suma) {
+   return 1;
+ }
+ else {
+   return 0;
+ }
 }
 
 
@@ -202,6 +219,13 @@ int main(){
  printf("%f \n",normforbenius); 
 
  printf("Imprimeixo si la matriu Mat és o no diagonal dominant \n");
+ int diagonal = DiagonalDom(Mat);
+ if (diagonal == 0){
+    printf("La matriu Mat no és diagonal dominant \n");
+ }
+ else {
+    printf("La matriu Mat és diagonal dominant \n");
+ }
 
  printf("Imprimeixo la infininorma de la matriu MatDD \n");
  float infininorm1 = Infininorm(MatDD);
@@ -216,6 +240,13 @@ int main(){
  printf("%f \n",normforbenius1); 
 
  printf("Imprimeixo si la matriu MatDD és o no diagonal dominant \n");
+ int diagonal1 = DiagonalDom(MatDD);
+ if (diagonal1 == 0){
+    printf("La matriu MatDD no és diagonal dominant \n");
+ }
+ else {
+    printf("La matriu MatDD és diagonal dominant \n");
+ }
 
  printf("Imprimeixo el producte escalar de V1 i V2 \n");
  float prod_esc = Scalar(V1, V2);
