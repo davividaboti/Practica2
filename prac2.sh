@@ -145,7 +145,7 @@ int NormForbenius( float M[N][N] ){
     int resultat=0;
     for (i=0; i<N; i++) {
         for (j=0; j<(N); j++){
-            suma += M[i^2][i^2];
+            suma += M[i^2][j^2];
         }
     }
     resultat = sqrt(suma);
