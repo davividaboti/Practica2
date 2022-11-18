@@ -10,7 +10,6 @@ float V1[N];
 float V2[N];
 float V3[N];
 float V4[N];
-float VRES[N];
 float alfa;
 
 void InitData(){
@@ -43,16 +42,19 @@ void PrintVect( float vect[N], int from, int numel ){
 
 void PrintRow( float mat[N][N], int row, int from, int numel ){
  int j;
-  for (j=row; j<=numel; j++){
+  for (j=from; j<=numel; j++){
    printf("%f \n",mat[row][j]); 
   }
 } 
 
 
-void MultEscalar( float vect[N], float vectres[N], float alfa ){
+void MultEscalar( float vect[N], float vectres[N], float alfa, int from, int numel ){
 int i;
 for (i=0;i<N;i++){
  vectres[i]=vect[i]*alfa;
+}
+for (i=from; i<numel; i++) {
+   printf("%f \n",vect[i]);
 }
 }
 
@@ -68,7 +70,7 @@ return ProducteEscalar;
 
 
 float Magnitude(float vect[N]){
-float mag;
+float mag = 0.0;
 int i;
 for (i=0; i<N; i++){
  mag += vect[i]*vect[i];
@@ -78,19 +80,19 @@ return mag;
 
 
 int Ortogonal (float vect1[N], float vect2[N]){
-    float orto;
+    float orto = 0;
     int i;
     for (i=0; i<N; i++){
-        orto += vect1[i]*vect2[i];
+        orto = orto + vect1[i]*vect2[i];
     }
     if (orto==0){
-	    return 0; }
+	    return 1; }
     else{ 
-        return 1; }
+        return 0; }
 }
 
 int Ortogonal_resultat (float vect1[N], float vect2[N]){
-    float orto;
+    float orto = 0;
     int i;
     for (i=0; i<N; i++){
         orto += vect1[i]*vect2[i];
@@ -99,11 +101,14 @@ int Ortogonal_resultat (float vect1[N], float vect2[N]){
     }
 
 
-float Projection( float vect1[N], float vect2[N], float vectres[N] ){
+void Projection( float vect1[N], float vect2[N], float vectres[N], int from, int numel ){
  float scalar = Scalar(vect1,vect2);
  float magnitud = Magnitude(vect2);
+ int i;
  vectres[N] = (scalar / magnitud) * (vect2[N]);
- return vectres[N];
+ for (i=from; i<numel; i++) {
+   printf("La projecció és: %f \n",vectres[i]);
+ }
 }
 
 
@@ -112,15 +117,15 @@ float Infininorm( float M[N][N] ){
  int infini_norma=0;
  int llista[N];
  for (i=0; i<(N); i++){
-    infini_norma += M[(fabs), i][0];
-    llista[infini_norma];
+    infini_norma = infini_norma + fabs(M[i][0]);
+    llista[i] = infini_norma;
         }
  for (i=0; i<(N); i++){
     if (llista[0] < llista[i]) {
         llista[0] = llista[i];
     }
     }
- return llista[i];
+ return llista[0];
 }
 
 float Onenorm( float M[N][N] ){
@@ -128,15 +133,15 @@ float Onenorm( float M[N][N] ){
  int one_norma=0;
  int llista[N];
  for (j=0; j<(N); j++){
-    one_norma += M[0][(fabs), j];
-    llista[one_norma];
+    one_norma = one_norma + fabs(M[0][j]);
+    llista[j] = one_norma;
         }
  for (j=0; j<(N); j++){
     if (llista[0] < llista[j]) {
         llista[0] = llista[j];
     }
     }
- return llista[j];
+ return llista[0];
 }
 
 int NormForbenius( float M[N][N] ){
@@ -145,7 +150,7 @@ int NormForbenius( float M[N][N] ){
     int resultat=0;
     for (i=0; i<N; i++) {
         for (j=0; j<(N); j++){
-            suma += M[i^2][j^2];
+            suma = suma + pow(M[i][j],2);
         }
     }
     resultat = sqrt(suma);
@@ -153,9 +158,8 @@ int NormForbenius( float M[N][N] ){
 }
 
 int DiagonalDom( float M[N][N] ) {
- int i, j;
+ int i, j, x;
  int suma = 0;
- int x;
  int elements = 0;
  int diagonal = 0;
  for (i=0; i<N; i++) {
@@ -296,15 +300,6 @@ int main(){
     printf("V1 i V3 són ortogonals \n");
  }
  
- printf("Imprimeixo si el vector V2 és o no ortogonal amb V1 \n");
- int ortogonal2 = Ortogonal(V2,V1);
- if (ortogonal2 == 0){
-    printf("V2 i V1 no són ortogonals \n");
- }
- else {
-    printf("V2 i V1 són ortogonals \n");
- }
- 
  printf("Imprimeixo si el vector V2 és o no ortogonal amb V3 \n");
  int ortogonal3 = Ortogonal(V2,V3);
  if (ortogonal3 == 0){
@@ -314,42 +309,17 @@ int main(){
     printf("V2 i V3 són ortogonals \n");
  }
  
- printf("Imprimeixo si el vector V3 és o no ortogonal amb V1 \n");
- int ortogonal4 = Ortogonal(V3,V1);
- if (ortogonal4 == 0){
-    printf("V3 i V1 no són ortogonals \n");
- }
- else {
-    printf("V3 i V1 són ortogonals \n");
- }
- 
- printf("Imprimeixo si el vector V3 és o no ortogonal amb V2 \n");
- int ortogonal5 = Ortogonal(V3,V2);
- if (ortogonal5 == 0){
-    printf("V3 i V2 no són ortogonals \n");
- }
- else {
-    printf("V3 i V2 són ortogonals \n");
- }
-
  printf("Imprimeixo la multiplicació del vector V3 amb l'escalar 2.0 i visualitzem els elements de 0 a 9 \n");
- MultEscalar(V1, V4, 2.0);
- PrintVect(V4,0,9);
+ MultEscalar(V1, V4, 2.0, 0, 10);
  
  printf("Imprimeixo la multiplicació del vector V3 amb l'escalar 2.0 i visualitzem els elements de 256 a 265 \n");
- PrintVect(V4,256,265);
+ MultEscalar(V1, V4, 2.0, 0, 10);
 
  printf("Imprimeixo la projecció del vector V2 amb V3 \n");
- for (int i=0; i<10; i++){
-    float projeccio = Projection(V2,V3,V4);
-    printf("La projecció és: %f \n",projeccio);
- } 
+ Projection(V2,V3,V4,0,10);
 
  printf("Imprimeixo la projecció del vector V1 amb V2 \n");
- for (int i=0; i<10; i++){
-    float projeccio2 = Projection(V1,V2,V4);
-    printf("La projecció és: %f \n",projeccio2);
- } 
+ Projection(V1,V2,V4,0,10);
 
 return 0;
 }
